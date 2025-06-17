@@ -1,0 +1,21 @@
+import folium
+import geopandas as gpd
+
+# GeoData load
+gdf = gpd.read_file("europe_density.geojson")
+
+# Basic Folium map
+m = folium.Map(location=[52, 10], zoom_start=5)
+
+# Choropleth layer
+folium.Choropleth(
+    geo_data=gdf,
+    data=gdf,
+    columns=["NUTS_ID", "Population_density"],
+    key_on="feature.properties.NUTS_ID",
+    fill_color="YlOrRd",
+    legend_name="Population Density (per km²)"
+).add_to(m)
+
+# Save HTML
+m.save("index.html")
